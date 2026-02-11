@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Types - solus 0.6</title>
+        <title>Types - solus 0.9.1</title>
 
 
         <!-- Custom HTML head -->
@@ -36,7 +36,7 @@
             const path_to_root = "../";
             const default_light_theme = "coal";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-899478ff.js";
+            window.path_to_searchindex_js = "../searchindex-faff2f83.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c8a7c3ba.js"></script>
@@ -138,7 +138,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">solus 0.6</h1>
+                    <h1 class="menu-title">solus 0.9.1</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -180,30 +180,33 @@
 <h2 id="fun"><a class="header" href="#fun"><code>fun</code></a></h2>
 <p>A compiled solus function, represented by either bytecode or a C function pointer for API calls. The function call syntax in solus is very conventional, but the function definition syntax may be a little unique for new users. A function in solus is defined first by its <strong>captures</strong> <code>[a, b, c]</code>, then its <strong>arguments</strong> <code>(a, b, c)</code>, and then the function body as a block. Upvalues are automatically promoted so that their lifetime is at least as long as the function, and do not need to be passed as arguments to reference them.</p>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 4;
-let var = [x](a) { // [captures](args)
+<pre><code class="language-c">var x = 4;
+var local = [x](a) { # [captures](args)
     x += a;
 };
 var(2);
-io.println(x); // 6
-<span class="boring">}</span></code></pre>
+io.println(x); # 6
+</code></pre>
 <p><strong>Note:</strong> You may also see <strong>captures</strong> referred to as “upvalues.” This is the formal name used internally in the VM.</p>
 <h2 id="obj"><a class="header" href="#obj"><code>obj</code></a></h2>
-<p>An object type, this functions very similarly to tables in Lua or objects in JavaScript. All objects are references and to make a copy of an object you must construct a new one.</p>
+<p>An object type, this functions very similarly to tables in Lua or objects in JavaScript. All objects are references and to make a copy of an object you must construct a new one. Two objects can be joined into a new one by using <code>+</code>, and <code>+=</code> will append members or array elements to an object.</p>
 <h3 id="operators"><a class="header" href="#operators">Operators</a></h3>
 <ul>
 <li><code>.</code>: Member access</li>
+<li><code>+ obj</code>: Join (new)</li>
+<li><code>+= obj</code>: Join (append)</li>
+<li><code>-= str</code>: Delete member</li>
 </ul>
 <h3 id="construction"><a class="header" href="#construction">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = {
+<pre><code class="language-c">var local = {
     member = 2
-    other_member = 3, // Optional commas
+    other_member = 3, # Optional commas
 };
-<span class="boring">}</span></code></pre>
+</code></pre>
+<h3 id="concatenation"><a class="header" href="#concatenation">Concatenation</a></h3>
+<pre><code class="language-c">var obj = {};
+obj += { x = 2 }; # Same obj as before
+</code></pre>
 <h2 id="str"><a class="header" href="#str"><code>str</code></a></h2>
 <p>The string type of solus, this type is very simple to work with and lends itself naturally to programmers’ expectations. It does not require any special functions or operators for concatenation.</p>
 <h3 id="operators-1"><a class="header" href="#operators-1">Operators</a></h3>
@@ -211,10 +214,8 @@ io.println(x); // 6
 <li><code>+</code>: Concatenate</li>
 </ul>
 <h3 id="construction-1"><a class="header" href="#construction-1">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = "str";
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = "str";
+</code></pre>
 <h2 id="i64"><a class="header" href="#i64"><code>i64</code></a></h2>
 <p>A 64 bit integer, the only integer type supported by solus natively. Although, this may change in the future.</p>
 <h3 id="operators-2"><a class="header" href="#operators-2">Operators</a></h3>
@@ -225,10 +226,8 @@ io.println(x); // 6
 <li><code>/</code>: Divide</li>
 </ul>
 <h3 id="construction-2"><a class="header" href="#construction-2">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = 1;
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = 1;
+</code></pre>
 <h2 id="f64"><a class="header" href="#f64"><code>f64</code></a></h2>
 <p>A 64 bit floating point number, the only floating point type supported by solus natively. Although, this may change in the future.</p>
 <h3 id="operators-3"><a class="header" href="#operators-3">Operators</a></h3>
@@ -239,10 +238,8 @@ io.println(x); // 6
 <li><code>/</code>: Divide</li>
 </ul>
 <h3 id="construction-3"><a class="header" href="#construction-3">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = 3.14;
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = 3.14;
+</code></pre>
 <h2 id="bool"><a class="header" href="#bool"><code>bool</code></a></h2>
 <p>A value that can only be <code>true</code> (1) or <code>false</code> (0).</p>
 <h3 id="operators-4"><a class="header" href="#operators-4">Operators</a></h3>
@@ -251,25 +248,19 @@ io.println(x); // 6
 <li><code>-</code>: Inverse</li>
 </ul>
 <h3 id="construction-4"><a class="header" href="#construction-4">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = true;
-let nvar = !var; // false
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = true;
+var nvar = !local; # false
+</code></pre>
 <h2 id="err"><a class="header" href="#err"><code>err</code></a></h2>
 <p>A type representing a failure condition, containing a string for the reason. This is for result-like error handling in solus, without the need for protected calls.</p>
 <h3 id="construction-5"><a class="header" href="#construction-5">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = err("Error!");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = err("Error!");
+</code></pre>
 <h2 id="panic"><a class="header" href="#panic"><code>panic</code></a></h2>
 <p>A type that the user cannot handle themselves, a <code>panic</code> is solus’ form of exceptions. Unless caught in a protected call, this will exit the program and show the line where it originated. When caught by <code>catch</code> or <code>attempt</code>, it will be transformed into the <code>err</code> type.</p>
 <h3 id="construction-6"><a class="header" href="#construction-6">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>panic("Critical Failure");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">panic("Critical Failure");
+</code></pre>
 
                     </main>
 

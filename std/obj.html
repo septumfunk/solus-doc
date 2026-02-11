@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Obj Module - solus 0.6</title>
+        <title>Obj Module - solus 0.9.1</title>
 
 
         <!-- Custom HTML head -->
@@ -36,7 +36,7 @@
             const path_to_root = "../";
             const default_light_theme = "coal";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-899478ff.js";
+            window.path_to_searchindex_js = "../searchindex-faff2f83.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c8a7c3ba.js"></script>
@@ -138,7 +138,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">solus 0.6</h1>
+                    <h1 class="menu-title">solus 0.9.1</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -192,14 +192,12 @@
 <li><code>val</code>: The value to store at the specified member name</li>
 </ul>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let o = {};
+<pre><code class="language-c">var o = {};
 obj.set(o, "wow", 1);
-io.println(o.wow); // 1
+io.println(o.wow); # 1
 obj.set(o, "Can't do this with . lol", 2);
-<span class="boring">}</span></code></pre>
-<h2 id="objsetobj-obj-key-str-val-any-1"><a class="header" href="#objsetobj-obj-key-str-val-any-1"><code>obj.set(obj: obj, key: str, val: any)</code></a></h2>
+</code></pre>
+<h2 id="objgetobj-obj-key-str-val-any"><a class="header" href="#objgetobj-obj-key-str-val-any"><code>obj.get(obj: obj, key: str, val: any)</code></a></h2>
 <p>Gets the object’s member at the specified key. Useful for non identifier friendly member keys</p>
 <h3 id="parameters-1"><a class="header" href="#parameters-1">Parameters</a></h3>
 <ul>
@@ -212,10 +210,96 @@ obj.set(o, "Can't do this with . lol", 2);
 <li><code>err</code>: If the member does not exist</li>
 </ul>
 <h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = obj.get(o, "Can with this :)");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">val x = obj.get(o, "Can with this :)");
+</code></pre>
+<h2 id="objusemetaobj-obj-meta-obj"><a class="header" href="#objusemetaobj-obj-meta-obj"><code>obj.usemeta(obj: obj, meta: obj)</code></a></h2>
+<p>Set the metaobj of an object. This defines custom behavior on the object. Note that if you update the metafuns on the metaobj, you <strong>must</strong> use it again.</p>
+<h3 id="parameters-2"><a class="header" href="#parameters-2">Parameters</a></h3>
+<ul>
+<li><code>obj</code>: The object to apply the metaobj to</li>
+<li><code>meta</code>: The metaobj to use</li>
+</ul>
+<h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
+<pre><code class="language-c">var og = { x = 2, y = 2 };
+var meta = {
+    storage = {}
+    _str = [og]() { "{" + str(og.x) + ", " + str(og.y) + "}" }
+    _set = [](key, value) { storage[key] = value; }
+    _get = [](key) { storage[key] }
+    _call = [og]() { str(og) }
+};
+obj.usemeta(og, meta);
+io.println(og()); # {2, 2}
+</code></pre>
+<h2 id="objmetaobj-obj"><a class="header" href="#objmetaobj-obj"><code>obj.meta(obj: obj)</code></a></h2>
+<p>Get the metaobj of an object</p>
+<h3 id="parameters-3"><a class="header" href="#parameters-3">Parameters</a></h3>
+<ul>
+<li><code>obj</code>: The object to get the metaobj of</li>
+</ul>
+<h3 id="returns-2"><a class="header" href="#returns-2">Returns</a></h3>
+<ul>
+<li><code>obj</code>: The object’s metaobj</li>
+<li><code>nil</code>: When the object has none</li>
+</ul>
+<h2 id="objstringifyobj-obj"><a class="header" href="#objstringifyobj-obj"><code>obj.stringify(obj: obj)</code></a></h2>
+<p>Converts an object into a string representation</p>
+<h3 id="parameters-4"><a class="header" href="#parameters-4">Parameters</a></h3>
+<ul>
+<li><code>obj</code>: The object to stringify</li>
+</ul>
+<h3 id="returns-3"><a class="header" href="#returns-3">Returns</a></h3>
+<ul>
+<li><code>str</code>: String representation of passed object</li>
+</ul>
+<h2 id="objpairsself-obj-callback-fun"><a class="header" href="#objpairsself-obj-callback-fun"><code>obj.pairs(self: obj, callback: fun)</code></a></h2>
+<p>Runs a callback passing each key/value pair in the object’s members component</p>
+<h3 id="parameters-5"><a class="header" href="#parameters-5">Parameters</a></h3>
+<ul>
+<li><code>self</code>: The object to loop over</li>
+<li><code>callback</code>: <code>[](key, value){}</code></li>
+</ul>
+<h3 id="example-3"><a class="header" href="#example-3">Example</a></h3>
+<pre><code class="language-c">var o = {
+    a = 1
+    b = 2
+    c = 3
+};
+obj.pairs(o, [](key, value) {
+    io.println(key + ": " + str(value));
+});
+</code></pre>
+<h2 id="objforeachself-obj-callback-fun"><a class="header" href="#objforeachself-obj-callback-fun"><code>obj.foreach(self: obj, callback: fun)</code></a></h2>
+<p>Runs a callback passing each value in the object’s array component</p>
+<h3 id="parameters-6"><a class="header" href="#parameters-6">Parameters</a></h3>
+<ul>
+<li><code>self</code>: The object to loop over</li>
+<li><code>callback</code>: <code>[](value){}</code></li>
+</ul>
+<h3 id="example-4"><a class="header" href="#example-4">Example</a></h3>
+<pre><code class="language-c">var o = { 1, 2, 3, 4, 5 };
+obj.foreach(o, [](value) {
+    io.println(value);
+});
+</code></pre>
+<h2 id="objmembersobj-obj"><a class="header" href="#objmembersobj-obj"><code>obj.members(obj: obj)</code></a></h2>
+<p>Returns the amount of values stored in the members component of the object</p>
+<h3 id="returns-4"><a class="header" href="#returns-4">Returns</a></h3>
+<ul>
+<li><code>i64</code>: Member count</li>
+</ul>
+<h2 id="objlenobj-obj"><a class="header" href="#objlenobj-obj"><code>obj.len(obj: obj)</code></a></h2>
+<p>Returns the total length of the array component of the object</p>
+<h3 id="returns-5"><a class="header" href="#returns-5">Returns</a></h3>
+<ul>
+<li><code>i64</code>: Array length</li>
+</ul>
+<h2 id="objtemplatefmt-fun"><a class="header" href="#objtemplatefmt-fun"><code>obj.template(fmt: fun)</code></a></h2>
+<p>Creates a special member that will call a function on stringification</p>
+<h3 id="returns-6"><a class="header" href="#returns-6">Returns</a></h3>
+<ul>
+<li><code>template</code>: A type that will evaluate a function on stringification</li>
+</ul>
 
                     </main>
 

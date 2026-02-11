@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>solus 0.6</title>
+        <title>solus 0.9.1</title>
         <meta name="robots" content="noindex">
 
 
@@ -37,7 +37,7 @@
             const path_to_root = "";
             const default_light_theme = "coal";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "searchindex-899478ff.js";
+            window.path_to_searchindex_js = "searchindex-faff2f83.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-c8a7c3ba.js"></script>
@@ -139,7 +139,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">solus 0.6</h1>
+                    <h1 class="menu-title">solus 0.9.1</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -191,30 +191,33 @@
 <h2 id="fun"><a class="header" href="#fun"><code>fun</code></a></h2>
 <p>A compiled solus function, represented by either bytecode or a C function pointer for API calls. The function call syntax in solus is very conventional, but the function definition syntax may be a little unique for new users. A function in solus is defined first by its <strong>captures</strong> <code>[a, b, c]</code>, then its <strong>arguments</strong> <code>(a, b, c)</code>, and then the function body as a block. Upvalues are automatically promoted so that their lifetime is at least as long as the function, and do not need to be passed as arguments to reference them.</p>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 4;
-let var = [x](a) { // [captures](args)
+<pre><code class="language-c">var x = 4;
+var local = [x](a) { # [captures](args)
     x += a;
 };
 var(2);
-io.println(x); // 6
-<span class="boring">}</span></code></pre>
+io.println(x); # 6
+</code></pre>
 <p><strong>Note:</strong> You may also see <strong>captures</strong> referred to as “upvalues.” This is the formal name used internally in the VM.</p>
 <h2 id="obj"><a class="header" href="#obj"><code>obj</code></a></h2>
-<p>An object type, this functions very similarly to tables in Lua or objects in JavaScript. All objects are references and to make a copy of an object you must construct a new one.</p>
+<p>An object type, this functions very similarly to tables in Lua or objects in JavaScript. All objects are references and to make a copy of an object you must construct a new one. Two objects can be joined into a new one by using <code>+</code>, and <code>+=</code> will append members or array elements to an object.</p>
 <h3 id="operators"><a class="header" href="#operators">Operators</a></h3>
 <ul>
 <li><code>.</code>: Member access</li>
+<li><code>+ obj</code>: Join (new)</li>
+<li><code>+= obj</code>: Join (append)</li>
+<li><code>-= str</code>: Delete member</li>
 </ul>
 <h3 id="construction"><a class="header" href="#construction">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = {
+<pre><code class="language-c">var local = {
     member = 2
-    other_member = 3, // Optional commas
+    other_member = 3, # Optional commas
 };
-<span class="boring">}</span></code></pre>
+</code></pre>
+<h3 id="concatenation"><a class="header" href="#concatenation">Concatenation</a></h3>
+<pre><code class="language-c">var obj = {};
+obj += { x = 2 }; # Same obj as before
+</code></pre>
 <h2 id="str"><a class="header" href="#str"><code>str</code></a></h2>
 <p>The string type of solus, this type is very simple to work with and lends itself naturally to programmers’ expectations. It does not require any special functions or operators for concatenation.</p>
 <h3 id="operators-1"><a class="header" href="#operators-1">Operators</a></h3>
@@ -222,10 +225,8 @@ io.println(x); // 6
 <li><code>+</code>: Concatenate</li>
 </ul>
 <h3 id="construction-1"><a class="header" href="#construction-1">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = "str";
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = "str";
+</code></pre>
 <h2 id="i64"><a class="header" href="#i64"><code>i64</code></a></h2>
 <p>A 64 bit integer, the only integer type supported by solus natively. Although, this may change in the future.</p>
 <h3 id="operators-2"><a class="header" href="#operators-2">Operators</a></h3>
@@ -236,10 +237,8 @@ io.println(x); // 6
 <li><code>/</code>: Divide</li>
 </ul>
 <h3 id="construction-2"><a class="header" href="#construction-2">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = 1;
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = 1;
+</code></pre>
 <h2 id="f64"><a class="header" href="#f64"><code>f64</code></a></h2>
 <p>A 64 bit floating point number, the only floating point type supported by solus natively. Although, this may change in the future.</p>
 <h3 id="operators-3"><a class="header" href="#operators-3">Operators</a></h3>
@@ -250,10 +249,8 @@ io.println(x); // 6
 <li><code>/</code>: Divide</li>
 </ul>
 <h3 id="construction-3"><a class="header" href="#construction-3">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = 3.14;
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = 3.14;
+</code></pre>
 <h2 id="bool"><a class="header" href="#bool"><code>bool</code></a></h2>
 <p>A value that can only be <code>true</code> (1) or <code>false</code> (0).</p>
 <h3 id="operators-4"><a class="header" href="#operators-4">Operators</a></h3>
@@ -262,104 +259,87 @@ io.println(x); // 6
 <li><code>-</code>: Inverse</li>
 </ul>
 <h3 id="construction-4"><a class="header" href="#construction-4">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = true;
-let nvar = !var; // false
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = true;
+var nvar = !local; # false
+</code></pre>
 <h2 id="err"><a class="header" href="#err"><code>err</code></a></h2>
 <p>A type representing a failure condition, containing a string for the reason. This is for result-like error handling in solus, without the need for protected calls.</p>
 <h3 id="construction-5"><a class="header" href="#construction-5">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = err("Error!");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var local = err("Error!");
+</code></pre>
 <h2 id="panic"><a class="header" href="#panic"><code>panic</code></a></h2>
 <p>A type that the user cannot handle themselves, a <code>panic</code> is solus’ form of exceptions. Unless caught in a protected call, this will exit the program and show the line where it originated. When caught by <code>catch</code> or <code>attempt</code>, it will be transformed into the <code>err</code> type.</p>
 <h3 id="construction-6"><a class="header" href="#construction-6">Construction</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>panic("Critical Failure");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">panic("Critical Failure");
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="keywords-and-expressions"><a class="header" href="#keywords-and-expressions">Keywords and Expressions</a></h1>
 <p>These are words that are reserved by the language for use in expressions, meaning they evaluate into a value, therefore can be assigned to a variable.</p>
 <h2 id="operations"><a class="header" href="#operations">Operations</a></h2>
 <p>There are some basic operations between types built into solus, and these are accessible with familiar and simple operators that you will recognize from maths or other programming languages. <strong>Note:</strong> <code>i64</code> and <code>f64</code> are automatically converted for basic operations with each other, and the target type is always determined by the type of the <strong>left-hand side</strong>.</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 1 + 2;
-let y = 4 / 4;
+<pre><code class="language-c">var x = 1 + 2;
+val y = 4 / 4;
 x = (x * y) / 3.0;
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="self"><a class="header" href="#self"><code>self</code></a></h2>
 <p>Self refers to the future storage location of an object during its construction. You can then capture the object in member functions, getting around the need to have the object passed as an argument to its own methods. Self is not defined in other contexts, and can be used as a name for local variables if you so desire.</p>
 <h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = {
+<pre><code class="language-c">var x = {
     count = 3
     call = [self](){ self.count }
 };
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="true-false-nil"><a class="header" href="#true-false-nil"><code>true</code>, <code>false</code>, <code>nil</code></a></h2>
 <p>These represent constants for their respective types, and cannot be overridden or used for names of local variables.</p>
 <h2 id="do-"><a class="header" href="#do-"><code>do {}</code></a></h2>
 <p>Executes a block and evaluates to the trailing return of the block. If the block does not have a trailing return, it will evaluate to <code>nil</code>. This is useful for executing code for function arguments, like this:</p>
 <h3 id="example-1-1"><a class="header" href="#example-1-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>io.println(do {
-    let x = 1;
+<pre><code class="language-c">io.println(do {
+    var x = 1;
     x += 3;
     x
 });
-<span class="boring">}</span></code></pre>
-<h2 id="if-c-a-else-b"><a class="header" href="#if-c-a-else-b"><code>if c: a else: b</code></a></h2>
-<p>The <code>if</code>/<code>else</code> statements can be used as an expression as well, mimicking the ternary operator in other languages. This statment will not work unless you provide an else, as it doesn’t make sense to implicitly return <code>nil</code> here. you can also chain these.</p>
+</code></pre>
+<h2 id="c-and-a-or-b"><a class="header" href="#c-and-a-or-b"><code>c and a or b</code></a></h2>
+<p>The <code>and</code>/<code>or</code> statements can be used to short circuit, as they evaluate to the last value that was evaluated within them. Therefore, <code>or</code> evaluates to the first truthful value, and <code>and</code> evaluates to the last truthful value.</p>
 <h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = true;
-io.println(if x: "true!" else: "false!");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var x = true;
+io.println(x and "true" or "false");
+</code></pre>
+<p><strong>Note:</strong> You may also use <code>&amp;&amp;</code>/<code>||</code> instead of <code>and</code>/<code>or</code> respectively.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="statements"><a class="header" href="#statements">Statements</a></h1>
 <p>Statements are the basic building blocks of the solus language and every line consists of either an expression or a statement. Statements do not evaluate to a value, meaning they cannot appear on the right hand side of any expression.</p>
-<h2 id="let-var--val"><a class="header" href="#let-var--val"><code>let var = val</code></a></h2>
-<p>The <code>let</code> statement is used to define a local variable, just like <code>local</code> in Lua or most languages that use it.</p>
+<h2 id="var-local--value"><a class="header" href="#var-local--value"><code>var local = value</code></a></h2>
+<p>The <code>var</code> statement is used to define a local variable, just like <code>local</code> in Lua or most languages that use it. On the other hand, the <code>val</code> statement is used to denote a value that cannot change, or constant.</p>
 <h3 id="example-3"><a class="header" href="#example-3">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let var = 1;
-<span class="boring">}</span></code></pre>
-<h2 id="if-c--else-"><a class="header" href="#if-c--else-"><code>if c: {} else: {}</code></a></h2>
+<pre><code class="language-c">var loc = 1;
+val con = 2;
+con = 3; # Compile Error
+</code></pre>
+<h2 id="if-c--else-"><a class="header" href="#if-c--else-"><code>if c {} else {}</code></a></h2>
 <p>The <code>if</code>/<code>else</code> statements are used to create branching paths in your code based on a condition. These are fundamental to every programming language in existence. Note that <code>if</code>/<code>else</code> do not <em>only</em> exist as statements, but also as an expression (see Expressions section).</p>
 <h3 id="example-1-2"><a class="header" href="#example-1-2">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>if cond: {
+<pre><code class="language-c">if cond {
     return a;
-} else: {
+} else {
     return b;
 }
-// or
-if cond:
+# or
+if cond
     return a;
-else:
+else
     return b;
-<span class="boring">}</span></code></pre>
-<h2 id="while-c-"><a class="header" href="#while-c-"><code>while c: {}</code></a></h2>
+</code></pre>
+<h2 id="while-c-"><a class="header" href="#while-c-"><code>while c {}</code></a></h2>
 <p>The <code>while</code> statement is used to run a block <em>while</em> a specified condition evaluates to true. This is another fundamental building block of programming languages, and works exactly like it does in others.</p>
 <h3 id="example-2-1"><a class="header" href="#example-2-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 0;
-while x &lt; 100: {
+<pre><code class="language-c">var x = 0;
+while x &lt; 100 {
     io.println(x);
     x += 1;
 }
-<span class="boring">}</span></code></pre>
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="the-std"><a class="header" href="#the-std">The STD</a></h1>
 <p>The std, or standard library, are the functions and globals that are built in to the solus language, but aren’t always necessarily available in all solus environments. The standard library is optionally loaded by the C api, and is always loaded in the CLI tool. All values in the global namespace CAN be overridden for now, but it is likely that readonly objects will be added in the future.</p>
@@ -382,14 +362,12 @@ while x &lt; 100: {
 <li><code>err</code>: If the path cannot be found or the execution fails</li>
 </ul>
 <h3 id="example-4"><a class="header" href="#example-4">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let module = unwrap(import("module"));
-if type(module) == "err":
+<pre><code class="language-c">var module = unwrap(import("module"));
+if type(module) == "err"
     io.println("Failed to load module.solu");
-else:
+else
     io.println(module.version);
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="requirepath-str"><a class="header" href="#requirepath-str"><code>require(path: str)</code></a></h2>
 <p>Loads a solus file and then executes it, behaving identically to import besides the fact that it panics instead of returning an error.</p>
 <h3 id="parameters-1"><a class="header" href="#parameters-1">Parameters</a></h3>
@@ -402,220 +380,208 @@ else:
 <li><code>panic</code>: If the path cannot be found or the execution fails</li>
 </ul>
 <h3 id="example-1-3"><a class="header" href="#example-1-3">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let module = require("notfound"); // This will stop execution!
-let mod2 = catch([](){ require("notfound") }); // Same as import("notfound")
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var module = require("notfound"); # This will stop execution!
+var mod2 = catch([](){ require("notfound") }); # Same as import("notfound")
+</code></pre>
+<h2 id="includepath-str"><a class="header" href="#includepath-str"><code>include(path: str)</code></a></h2>
+<p>Technically not a function but rather a keyword, this includes a file in the compilation path of the file it is called in, therefore resulting in a single chunk of bytecode</p>
+<h3 id="parameters-2"><a class="header" href="#parameters-2">Parameters</a></h3>
+<ul>
+<li><code>path</code>: The path to the solus file. The .solu extension will be attempted automatically if excluded.</li>
+</ul>
+<h3 id="returns-2"><a class="header" href="#returns-2">Returns</a></h3>
+<ul>
+<li><code>any</code>: If execution succeeds</li>
+<li><code>compile error</code>: If the path cannot be found or the execution fails</li>
+</ul>
+<h3 id="example-2-2"><a class="header" href="#example-2-2">Example</a></h3>
+<pre><code class="language-c">var module = include("notfound"); # This will fail at compile time
+</code></pre>
 <h2 id="evalsrc-str"><a class="header" href="#evalsrc-str"><code>eval(src: str)</code></a></h2>
 <p>Compiles source code from a string into a <code>fun</code>, note that this is NOT sandboxed and is NOT safe to accept use input with. Treat eval very carefully.</p>
-<h3 id="parameters-2"><a class="header" href="#parameters-2">Parameters</a></h3>
+<h3 id="parameters-3"><a class="header" href="#parameters-3">Parameters</a></h3>
 <ul>
 <li><code>src</code>: Solus source code stored in a string</li>
 </ul>
-<h3 id="returns-2"><a class="header" href="#returns-2">Returns</a></h3>
+<h3 id="returns-3"><a class="header" href="#returns-3">Returns</a></h3>
 <ul>
 <li><code>any</code>: On successful evaluation</li>
 <li><code>err</code>: On compile error or runtime panic</li>
 </ul>
-<h3 id="example-2-2"><a class="header" href="#example-2-2">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let cat = "{ meows = 2 paws = 4 }";
-let instance = eval(cat);
-io.println(instance.meows); // 2
-<span class="boring">}</span></code></pre>
+<h3 id="example-3-1"><a class="header" href="#example-3-1">Example</a></h3>
+<pre><code class="language-c">var cat = "{ meows = 2 paws = 4 }";
+var instance = eval(cat);
+io.println(instance.meows); # 2
+</code></pre>
 <h2 id="panicerr-str"><a class="header" href="#panicerr-str"><code>panic(err: str)</code></a></h2>
 <p>Creates a runtime <code>panic</code>, solus’ equivalent to an exception pretty much. This will exit the program if it is not DIRECTLY caught.</p>
-<h3 id="parameters-3"><a class="header" href="#parameters-3">Parameters</a></h3>
+<h3 id="parameters-4"><a class="header" href="#parameters-4">Parameters</a></h3>
 <ul>
 <li><code>err</code>: The reason for the runtime panic</li>
 </ul>
-<h3 id="returns-3"><a class="header" href="#returns-3">Returns</a></h3>
+<h3 id="returns-4"><a class="header" href="#returns-4">Returns</a></h3>
 <ul>
 <li><code>panic</code>: A fatal error type that exits the program if not caught</li>
 </ul>
-<h3 id="example-3-1"><a class="header" href="#example-3-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>if fatal_err_condition:
+<h3 id="example-4-1"><a class="header" href="#example-4-1">Example</a></h3>
+<pre><code class="language-c">if fatal_err_condition:
     panic("ohhhh shit!");
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="catchtry-fun"><a class="header" href="#catchtry-fun"><code>catch(try: fun)</code></a></h2>
 <p>Catches any <code>panic</code>s thrown within the provided try block’s scope of execution. Think of this as a try/catch that returns a result instead of passing it.</p>
-<h3 id="parameters-4"><a class="header" href="#parameters-4">Parameters</a></h3>
+<h3 id="parameters-5"><a class="header" href="#parameters-5">Parameters</a></h3>
 <ul>
 <li><code>try</code>:  A function that may panic or return an err</li>
 </ul>
-<h3 id="returns-4"><a class="header" href="#returns-4">Returns</a></h3>
+<h3 id="returns-5"><a class="header" href="#returns-5">Returns</a></h3>
 <ul>
 <li><code>any</code>: Whatever the provided try <code>fun</code> returns</li>
 <li><code>err</code>: The caught panic if one is thrown, converted to an err</li>
 </ul>
-<h3 id="example-4-1"><a class="header" href="#example-4-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let mod = catch([](){ require("notfound") }); // Same as import("notfound")
-<span class="boring">}</span></code></pre>
+<h3 id="example-5"><a class="header" href="#example-5">Example</a></h3>
+<pre><code class="language-c">var mod = catch([](){ require("notfound") }); # Same as import("notfound")
+</code></pre>
 <h2 id="attempttry-fun-handler-funerr"><a class="header" href="#attempttry-fun-handler-funerr"><code>attempt(try: fun, handler: fun(err))</code></a></h2>
 <p>Similar to <code>catch</code> except it uses a proper handler <code>fun</code>, mimicking try/catch behavior in other languages. If `</p>
-<h3 id="parameters-5"><a class="header" href="#parameters-5">Parameters</a></h3>
+<h3 id="parameters-6"><a class="header" href="#parameters-6">Parameters</a></h3>
 <ul>
 <li><code>try</code>: A function that may panic or return an err</li>
 <li><code>handler</code>: A handler function that optionally accepts the caught panic/returned error as an <code>err</code></li>
 </ul>
-<h3 id="returns-5"><a class="header" href="#returns-5">Returns</a></h3>
+<h3 id="returns-6"><a class="header" href="#returns-6">Returns</a></h3>
 <ul>
 <li><code>any</code>: Whatever the provided try <code>fun</code> returns if it succeeds, or whatever the provided handler <code>fun</code> returns</li>
 </ul>
-<h3 id="example-5"><a class="header" href="#example-5">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let mod = attempt(
+<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
+<pre><code class="language-c">var mod = attempt(
     []() { return import("doesnt-exist.solu"); },
     [](err) { io.println(err); return {}; }
 );
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="unwrapval-any"><a class="header" href="#unwrapval-any"><code>unwrap(val: any)</code></a></h2>
 <p>Unwraps a variable that is ambiguously value or error, returning either the value or panicking on <code>err</code></p>
-<h3 id="parameters-6"><a class="header" href="#parameters-6">Parameters</a></h3>
+<h3 id="parameters-7"><a class="header" href="#parameters-7">Parameters</a></h3>
 <ul>
 <li><code>val</code>: Either a value or an <code>err</code></li>
 </ul>
-<h3 id="returns-6"><a class="header" href="#returns-6">Returns</a></h3>
+<h3 id="returns-7"><a class="header" href="#returns-7">Returns</a></h3>
 <ul>
 <li><code>any</code>: <code>val</code> is a valid value</li>
 <li><code>panic</code>: <code>val</code> is of type <code>err</code></li>
 </ul>
-<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let mod = unwrap(import("")); // Panics on failure like require("")
-<span class="boring">}</span></code></pre>
+<h3 id="example-7"><a class="header" href="#example-7">Example</a></h3>
+<pre><code class="language-c">var mod = unwrap(import("")); # Panics on failure like require("")
+</code></pre>
 <h2 id="unwrap_orvalid-any-invalid-any"><a class="header" href="#unwrap_orvalid-any-invalid-any"><code>unwrap_or(valid: any, invalid: any)</code></a></h2>
 <p>Returns <code>valid</code> if it is a valid value, or returns <code>invalid</code> if <code>valid</code> is <code>err</code></p>
-<h3 id="parameters-7"><a class="header" href="#parameters-7">Parameters</a></h3>
+<h3 id="parameters-8"><a class="header" href="#parameters-8">Parameters</a></h3>
 <ul>
 <li><code>valid</code>: A value to check the validity of</li>
 <li><code>invalid</code>: The fallback case if <code>valid</code> is not</li>
 </ul>
-<h3 id="returns-7"><a class="header" href="#returns-7">Returns</a></h3>
+<h3 id="returns-8"><a class="header" href="#returns-8">Returns</a></h3>
 <ul>
 <li><code>any</code>: Either <code>valid</code> or <code>invalid</code></li>
 </ul>
-<h3 id="example-7"><a class="header" href="#example-7">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let cfg = unwrap_or(do {
-    let f = io.fread("test.cfg");
-    if type(f) == "err": f
-    else: eval(f)
+<h3 id="example-8"><a class="header" href="#example-8">Example</a></h3>
+<pre><code class="language-c">var cfg = unwrap_or(do {
+    var f = io.fread("test.cfg");
+    type(f) == "err" and f or eval(f)
 }, do {
     unwrap(io.fwrite("test.cfg", obj.stringify(default, false)));
     default
 });
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="assertcon-bool"><a class="header" href="#assertcon-bool"><code>assert(con: bool)</code></a></h2>
 <p>Throws a <code>panic</code> if the provided condition is false</p>
-<h3 id="parameters-8"><a class="header" href="#parameters-8">Parameters</a></h3>
+<h3 id="parameters-9"><a class="header" href="#parameters-9">Parameters</a></h3>
 <ul>
 <li><code>con</code>: Boolean condition</li>
 </ul>
-<h3 id="example-8"><a class="header" href="#example-8">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>assert(1 == 1);
-assert(1 == 2); // Panic
-<span class="boring">}</span></code></pre>
+<h3 id="example-9"><a class="header" href="#example-9">Example</a></h3>
+<pre><code class="language-c">assert(1 == 1);
+assert(1 == 2); # Panic
+</code></pre>
 <h2 id="typeval-any"><a class="header" href="#typeval-any"><code>type(val: any)</code></a></h2>
 <p>Returns the type of a value represented as a string</p>
-<h3 id="parameters-9"><a class="header" href="#parameters-9">Parameters</a></h3>
+<h3 id="parameters-10"><a class="header" href="#parameters-10">Parameters</a></h3>
 <ul>
 <li><code>val</code>: Any value possible in the solus language</li>
 </ul>
-<h3 id="returns-8"><a class="header" href="#returns-8">Returns</a></h3>
+<h3 id="returns-9"><a class="header" href="#returns-9">Returns</a></h3>
 <ul>
 <li><code>str</code>: The typename of the value provided</li>
 </ul>
-<h3 id="example-9"><a class="header" href="#example-9">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let module = unwrap(import("module"));
-if type(module) == "err":
+<h3 id="example-10"><a class="header" href="#example-10">Example</a></h3>
+<pre><code class="language-c">var module = unwrap(import("module"));
+if type(module) == "err"
     io.println("Failed to load module.solu");
-else:
+else
     io.println(module.version);
-<span class="boring">}</span></code></pre>
-<h2 id=""><a class="header" href="#"><code>()</code></a></h2>
+</code></pre>
 <h2 id="strval-any"><a class="header" href="#strval-any"><code>str(val: any)</code></a></h2>
 <p>Converts a value of any type into a string representation. Note that this function does not stringify objects, but rather gives a string representation of the pointer.</p>
-<h3 id="parameters-10"><a class="header" href="#parameters-10">Parameters</a></h3>
+<h3 id="parameters-11"><a class="header" href="#parameters-11">Parameters</a></h3>
 <ul>
 <li><code>val</code>: A value of any type.</li>
 </ul>
-<h3 id="returns-9"><a class="header" href="#returns-9">Returns</a></h3>
+<h3 id="returns-10"><a class="header" href="#returns-10">Returns</a></h3>
 <ul>
 <li><code>str</code>: A string representation of the value at its most basic.</li>
 </ul>
-<h3 id="example-10"><a class="header" href="#example-10">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 4; // i64
-let y = {}; // obj
-io.println("x: " + str(x) + ", y: " + str(y)); // "x: 4, y: 0x71d00c0d8"
-<span class="boring">}</span></code></pre>
+<h3 id="example-11"><a class="header" href="#example-11">Example</a></h3>
+<pre><code class="language-c">var x = 4; # i64
+var y = {}; # obj
+io.println("x: " + str(x) + ", y: " + str(y)); # "x: 4, y: 0x71d00c0d8"
+</code></pre>
 <h2 id="errstr-str"><a class="header" href="#errstr-str"><code>err(str: str)</code></a></h2>
 <p>Constructs an <code>err</code> type from a <code>str</code>. You can return this to represent failure conditions.</p>
-<h3 id="parameters-11"><a class="header" href="#parameters-11">Parameters</a></h3>
+<h3 id="parameters-12"><a class="header" href="#parameters-12">Parameters</a></h3>
 <ul>
 <li><code>str</code>: The reason of error or failure condition</li>
 </ul>
-<h3 id="returns-10"><a class="header" href="#returns-10">Returns</a></h3>
+<h3 id="returns-11"><a class="header" href="#returns-11">Returns</a></h3>
 <ul>
 <li><code>err</code>: An error or failure condition internally represented by a string</li>
 </ul>
-<h3 id="example-11"><a class="header" href="#example-11">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let fun = [](bool) {
-    if bool: "success"
-    else: err("failure!")
+<h3 id="example-12"><a class="header" href="#example-12">Example</a></h3>
+<pre><code class="language-c">var fun = [](bool) {
+    bool and "success"
+    or err("failure!")
 };
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="i64f64-f64"><a class="header" href="#i64f64-f64"><code>i64(f64: f64)</code></a></h2>
 <p>Converts an f64 value into the i64 equivalent value. This will result in loss of floating point (decimal) precision.</p>
-<h3 id="parameters-12"><a class="header" href="#parameters-12">Parameters</a></h3>
-<ul>
-<li><code>f64</code>: An f64 value to be converted into i64</li>
-</ul>
-<h3 id="returns-11"><a class="header" href="#returns-11">Returns</a></h3>
-<ul>
-<li><code>i64</code>: The i64 equivalent to the f64 value provided</li>
-</ul>
-<h2 id="f64i64-i64"><a class="header" href="#f64i64-i64"><code>f64(i64: i64)</code></a></h2>
-<p>Converts an i64 value into the f64 equivalent value. Not all values i64 represents can be represented by f64 accurately.</p>
 <h3 id="parameters-13"><a class="header" href="#parameters-13">Parameters</a></h3>
 <ul>
-<li><code>i64</code>: An f64 value to be converted into i64</li>
+<li><code>f64|str</code>: An f64 or str value to be converted into i64</li>
 </ul>
 <h3 id="returns-12"><a class="header" href="#returns-12">Returns</a></h3>
 <ul>
-<li><code>f64</code>: The f64 equivalent to the i64 value provided</li>
+<li><code>i64</code>: The i64 equivalent to the value provided</li>
+</ul>
+<h2 id="f64i64-i64"><a class="header" href="#f64i64-i64"><code>f64(i64: i64)</code></a></h2>
+<p>Converts an i64 value into the f64 equivalent value. Not all values i64 represents can be represented by f64 accurately.</p>
+<h3 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h3>
+<ul>
+<li><code>i64|str</code>: An i64 or str value to be converted into f64</li>
+</ul>
+<h3 id="returns-13"><a class="header" href="#returns-13">Returns</a></h3>
+<ul>
+<li><code>f64</code>: The f64 equivalent to the value provided</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="io-module"><a class="header" href="#io-module"><code>io</code> Module</a></h1>
 <p>This module provides basic input/output capabilities to the solus VM so that you can actually see what your program is doing. This also includes some other system info.</p>
 <h2 id="ioprintval-any"><a class="header" href="#ioprintval-any"><code>io.print(val: any)</code></a></h2>
 <p>Prints the <code>str</code> representation of any value to the console</p>
-<h3 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h3>
+<h3 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h3>
 <ul>
 <li><code>val</code>: Any valid value in the solus language</li>
 </ul>
-<h3 id="example-12"><a class="header" href="#example-12">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>io.print("Hello!");
-<span class="boring">}</span></code></pre>
+<h3 id="example-13"><a class="header" href="#example-13">Example</a></h3>
+<pre><code class="language-c">io.print("Hello!");
+</code></pre>
 <h2 id="ioprintlnval-any"><a class="header" href="#ioprintlnval-any"><code>io.println(val: any)</code></a></h2>
 <p>Prints the <code>str</code> representation of any value to the console, followed by a newline character and flush</p>
 <h3 id="parameters-1-1"><a class="header" href="#parameters-1-1">Parameters</a></h3>
@@ -623,13 +589,11 @@ io.println("x: " + str(x) + ", y: " + str(y)); // "x: 4, y: 0x71d00c0d8"
 <li><code>val</code>: Any valid value in the solus language</li>
 </ul>
 <h3 id="example-1-4"><a class="header" href="#example-1-4">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>io.println("Hello, World!");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">io.println("Hello, World!");
+</code></pre>
 <h2 id="iotime"><a class="header" href="#iotime"><code>io.time()</code></a></h2>
 <p>Returns the time in seconds since the UNIX epoch</p>
-<h3 id="returns-13"><a class="header" href="#returns-13">Returns</a></h3>
+<h3 id="returns-14"><a class="header" href="#returns-14">Returns</a></h3>
 <ul>
 <li><code>f64</code>: Time in seconds since the UNIX epoch, represented as an f64</li>
 </ul>
@@ -645,11 +609,9 @@ io.println("x: " + str(x) + ", y: " + str(y)); // "x: 4, y: 0x71d00c0d8"
 <li><code>err</code>: The reason for read failure</li>
 </ul>
 <h3 id="example-2-3"><a class="header" href="#example-2-3">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let f = io.fread("test.cfg");
+<pre><code class="language-c">var f = io.fread("test.cfg");
 eval(unwrap(f));
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="iofwritepath-str-content-str"><a class="header" href="#iofwritepath-str-content-str"><code>io.fwrite(path: str, content: str)</code></a></h2>
 <p>Writes the provided string to a file at the specified path</p>
 <h3 id="parameters-3-1"><a class="header" href="#parameters-3-1">Parameters</a></h3>
@@ -661,21 +623,39 @@ eval(unwrap(f));
 <li><code>err</code>: The reason for write failure, if encountered</li>
 </ul>
 <h3 id="example-3-2"><a class="header" href="#example-3-2">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>unwrap(io.fwrite("test.cfg", obj.stringify(default, false)));
+<pre><code class="language-c">unwrap(io.fwrite("test.cfg", obj.stringify(default, false)));
 default
-<span class="boring">}</span></code></pre>
+</code></pre>
+<h2 id="ioinputprefix-str"><a class="header" href="#ioinputprefix-str"><code>io.input(prefix: str)</code></a></h2>
+<p>Get input from the user in a command line, printing a prefix before hand</p>
+<h3 id="parameters-4-1"><a class="header" href="#parameters-4-1">Parameters</a></h3>
+<ul>
+<li><code>prefix</code>: The prefix string for the input</li>
+</ul>
+<h3 id="returns-3-1"><a class="header" href="#returns-3-1">Returns</a></h3>
+<ul>
+<li><code>str</code>: The user’s given input followed by <code>\n</code></li>
+</ul>
+<h3 id="example-4-2"><a class="header" href="#example-4-2">Example</a></h3>
+<pre><code class="language-c">while !should_exit {
+    var i = io.input("&gt; ");
+    if i == "!\n"
+        i = old_i;
+    if i != "\n"
+        io.println(str(catch([i]() { eval(i) })));
+    old_i = i;
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="string-module"><a class="header" href="#string-module"><code>string</code> Module</a></h1>
 <p>This module provides functions for manipulating <code>str</code> types. Note that strings in solus can be concatenated using the same <code>+</code> operator as any other value, which is why there is no <code>string.cat(a, b)</code>!</p>
 <h2 id="stringlenstr-str"><a class="header" href="#stringlenstr-str"><code>string.len(str: str)</code></a></h2>
 <p>Returns the length of a string</p>
-<h3 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h3>
+<h3 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h3>
 <ul>
 <li><code>str</code>: The string to get the length of</li>
 </ul>
-<h3 id="returns-14"><a class="header" href="#returns-14">Returns</a></h3>
+<h3 id="returns-15"><a class="header" href="#returns-15">Returns</a></h3>
 <ul>
 <li><code>i64</code>: The length of the string, in characters</li>
 </ul>
@@ -702,32 +682,51 @@ default
 <ul>
 <li><code>str</code>: Repeated string</li>
 </ul>
+<h2 id="stringjoinstrings-obj"><a class="header" href="#stringjoinstrings-obj"><code>string.join(strings: obj)</code></a></h2>
+<p>Joins an array of strings into a single str</p>
+<h3 id="parameters-3-2"><a class="header" href="#parameters-3-2">Parameters</a></h3>
+<ul>
+<li><code>strings</code>: An obj array of strings</li>
+</ul>
+<h3 id="returns-3-2"><a class="header" href="#returns-3-2">Returns</a></h3>
+<ul>
+<li><code>str</code>: Combined string</li>
+</ul>
+<h2 id="stringsplitstring-str-delim-str"><a class="header" href="#stringsplitstring-str-delim-str"><code>string.split(string: str, delim: str)</code></a></h2>
+<p>Splits a str into an array of strings separated by a delimiter</p>
+<h3 id="parameters-4-2"><a class="header" href="#parameters-4-2">Parameters</a></h3>
+<ul>
+<li><code>string</code>: The string to split apart</li>
+<li><code>delim</code>: The separator to split at</li>
+</ul>
+<h3 id="returns-4-1"><a class="header" href="#returns-4-1">Returns</a></h3>
+<ul>
+<li><code>obj</code>: Array of strings</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="obj-module"><a class="header" href="#obj-module"><code>obj</code> Module</a></h1>
 <p>This module provides functions that allow you to interact with objects without using the built in operators and construction methods. This is useful for non-identifier friendly keys.</p>
 <h2 id="objnew"><a class="header" href="#objnew"><code>obj.new()</code></a></h2>
 <p>Constructs a new object with no members</p>
-<h3 id="returns-15"><a class="header" href="#returns-15">Returns</a></h3>
+<h3 id="returns-16"><a class="header" href="#returns-16">Returns</a></h3>
 <ul>
 <li><code>obj</code>: An empty object</li>
 </ul>
 <h2 id="objsetobj-obj-key-str-val-any"><a class="header" href="#objsetobj-obj-key-str-val-any"><code>obj.set(obj: obj, key: str, val: any)</code></a></h2>
 <p>Sets the object’s member at the specified key. Not all keys set this way can be accessed with the postfix <code>obj.member</code> operator</p>
-<h3 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h3>
+<h3 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h3>
 <ul>
 <li><code>obj</code>: The object to call set on</li>
 <li><code>key</code>: The member name to store the value at</li>
 <li><code>val</code>: The value to store at the specified member name</li>
 </ul>
-<h3 id="example-13"><a class="header" href="#example-13">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let o = {};
+<h3 id="example-14"><a class="header" href="#example-14">Example</a></h3>
+<pre><code class="language-c">var o = {};
 obj.set(o, "wow", 1);
-io.println(o.wow); // 1
+io.println(o.wow); # 1
 obj.set(o, "Can't do this with . lol", 2);
-<span class="boring">}</span></code></pre>
-<h2 id="objsetobj-obj-key-str-val-any-1"><a class="header" href="#objsetobj-obj-key-str-val-any-1"><code>obj.set(obj: obj, key: str, val: any)</code></a></h2>
+</code></pre>
+<h2 id="objgetobj-obj-key-str-val-any"><a class="header" href="#objgetobj-obj-key-str-val-any"><code>obj.get(obj: obj, key: str, val: any)</code></a></h2>
 <p>Gets the object’s member at the specified key. Useful for non identifier friendly member keys</p>
 <h3 id="parameters-1-3"><a class="header" href="#parameters-1-3">Parameters</a></h3>
 <ul>
@@ -740,16 +739,102 @@ obj.set(o, "Can't do this with . lol", 2);
 <li><code>err</code>: If the member does not exist</li>
 </ul>
 <h3 id="example-1-5"><a class="header" href="#example-1-5">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = obj.get(o, "Can with this :)");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">val x = obj.get(o, "Can with this :)");
+</code></pre>
+<h2 id="objusemetaobj-obj-meta-obj"><a class="header" href="#objusemetaobj-obj-meta-obj"><code>obj.usemeta(obj: obj, meta: obj)</code></a></h2>
+<p>Set the metaobj of an object. This defines custom behavior on the object. Note that if you update the metafuns on the metaobj, you <strong>must</strong> use it again.</p>
+<h3 id="parameters-2-3"><a class="header" href="#parameters-2-3">Parameters</a></h3>
+<ul>
+<li><code>obj</code>: The object to apply the metaobj to</li>
+<li><code>meta</code>: The metaobj to use</li>
+</ul>
+<h3 id="example-2-4"><a class="header" href="#example-2-4">Example</a></h3>
+<pre><code class="language-c">var og = { x = 2, y = 2 };
+var meta = {
+    storage = {}
+    _str = [og]() { "{" + str(og.x) + ", " + str(og.y) + "}" }
+    _set = [](key, value) { storage[key] = value; }
+    _get = [](key) { storage[key] }
+    _call = [og]() { str(og) }
+};
+obj.usemeta(og, meta);
+io.println(og()); # {2, 2}
+</code></pre>
+<h2 id="objmetaobj-obj"><a class="header" href="#objmetaobj-obj"><code>obj.meta(obj: obj)</code></a></h2>
+<p>Get the metaobj of an object</p>
+<h3 id="parameters-3-3"><a class="header" href="#parameters-3-3">Parameters</a></h3>
+<ul>
+<li><code>obj</code>: The object to get the metaobj of</li>
+</ul>
+<h3 id="returns-2-3"><a class="header" href="#returns-2-3">Returns</a></h3>
+<ul>
+<li><code>obj</code>: The object’s metaobj</li>
+<li><code>nil</code>: When the object has none</li>
+</ul>
+<h2 id="objstringifyobj-obj"><a class="header" href="#objstringifyobj-obj"><code>obj.stringify(obj: obj)</code></a></h2>
+<p>Converts an object into a string representation</p>
+<h3 id="parameters-4-3"><a class="header" href="#parameters-4-3">Parameters</a></h3>
+<ul>
+<li><code>obj</code>: The object to stringify</li>
+</ul>
+<h3 id="returns-3-3"><a class="header" href="#returns-3-3">Returns</a></h3>
+<ul>
+<li><code>str</code>: String representation of passed object</li>
+</ul>
+<h2 id="objpairsself-obj-callback-fun"><a class="header" href="#objpairsself-obj-callback-fun"><code>obj.pairs(self: obj, callback: fun)</code></a></h2>
+<p>Runs a callback passing each key/value pair in the object’s members component</p>
+<h3 id="parameters-5-1"><a class="header" href="#parameters-5-1">Parameters</a></h3>
+<ul>
+<li><code>self</code>: The object to loop over</li>
+<li><code>callback</code>: <code>[](key, value){}</code></li>
+</ul>
+<h3 id="example-3-3"><a class="header" href="#example-3-3">Example</a></h3>
+<pre><code class="language-c">var o = {
+    a = 1
+    b = 2
+    c = 3
+};
+obj.pairs(o, [](key, value) {
+    io.println(key + ": " + str(value));
+});
+</code></pre>
+<h2 id="objforeachself-obj-callback-fun"><a class="header" href="#objforeachself-obj-callback-fun"><code>obj.foreach(self: obj, callback: fun)</code></a></h2>
+<p>Runs a callback passing each value in the object’s array component</p>
+<h3 id="parameters-6-1"><a class="header" href="#parameters-6-1">Parameters</a></h3>
+<ul>
+<li><code>self</code>: The object to loop over</li>
+<li><code>callback</code>: <code>[](value){}</code></li>
+</ul>
+<h3 id="example-4-3"><a class="header" href="#example-4-3">Example</a></h3>
+<pre><code class="language-c">var o = { 1, 2, 3, 4, 5 };
+obj.foreach(o, [](value) {
+    io.println(value);
+});
+</code></pre>
+<h2 id="objmembersobj-obj"><a class="header" href="#objmembersobj-obj"><code>obj.members(obj: obj)</code></a></h2>
+<p>Returns the amount of values stored in the members component of the object</p>
+<h3 id="returns-4-2"><a class="header" href="#returns-4-2">Returns</a></h3>
+<ul>
+<li><code>i64</code>: Member count</li>
+</ul>
+<h2 id="objlenobj-obj"><a class="header" href="#objlenobj-obj"><code>obj.len(obj: obj)</code></a></h2>
+<p>Returns the total length of the array component of the object</p>
+<h3 id="returns-5-1"><a class="header" href="#returns-5-1">Returns</a></h3>
+<ul>
+<li><code>i64</code>: Array length</li>
+</ul>
+<h2 id="objtemplatefmt-fun"><a class="header" href="#objtemplatefmt-fun"><code>obj.template(fmt: fun)</code></a></h2>
+<p>Creates a special member that will call a function on stringification</p>
+<h3 id="returns-6-1"><a class="header" href="#returns-6-1">Returns</a></h3>
+<ul>
+<li><code>template</code>: A type that will evaluate a function on stringification</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="math-module"><a class="header" href="#math-module"><code>math</code> Module</a></h1>
 <p>This one is a brief module because these math functions are common in basically every programming language, so I’ll keep the explanations short and straight to the point.</p>
 <h2 id="mathminia-i64-b-i64"><a class="header" href="#mathminia-i64-b-i64"><code>math.mini(a: i64, b: i64)</code></a></h2>
 <p>Returns the minimum of two <code>i64</code> values</p>
-<h3 id="returns-16"><a class="header" href="#returns-16">Returns</a></h3>
+<h3 id="returns-17"><a class="header" href="#returns-17">Returns</a></h3>
 <ul>
 <li><code>i64</code>: The lower value between parameters <code>a</code> and <code>b</code></li>
 </ul>
@@ -761,25 +846,25 @@ obj.set(o, "Can't do this with . lol", 2);
 </ul>
 <h2 id="mathminfa-f64-b-f64"><a class="header" href="#mathminfa-f64-b-f64"><code>math.minf(a: f64, b: f64)</code></a></h2>
 <p>Returns the minimum of two <code>f64</code> values</p>
-<h3 id="returns-2-3"><a class="header" href="#returns-2-3">Returns</a></h3>
+<h3 id="returns-2-4"><a class="header" href="#returns-2-4">Returns</a></h3>
 <ul>
 <li><code>f64</code>: The lower value between parameters <code>a</code> and <code>b</code></li>
 </ul>
 <h2 id="mathmaxfa-f64-b-f64"><a class="header" href="#mathmaxfa-f64-b-f64"><code>math.maxf(a: f64, b: f64)</code></a></h2>
 <p>Returns the minimum of two <code>f64</code> values</p>
-<h3 id="returns-3-1"><a class="header" href="#returns-3-1">Returns</a></h3>
+<h3 id="returns-3-4"><a class="header" href="#returns-3-4">Returns</a></h3>
 <ul>
 <li><code>f64</code>: The higher value between parameters <code>a</code> and <code>b</code></li>
 </ul>
 <h2 id="mathrandimin_v-i64-max_v-i64"><a class="header" href="#mathrandimin_v-i64-max_v-i64"><code>math.randi(min_v: i64, max_v: i64)</code></a></h2>
 <p>Returns a random integer between a minimum and maximum value, inclusive</p>
-<h3 id="returns-4-1"><a class="header" href="#returns-4-1">Returns</a></h3>
+<h3 id="returns-4-3"><a class="header" href="#returns-4-3">Returns</a></h3>
 <ul>
 <li><code>i64</code>: A random integer between your provided minimum and maximum</li>
 </ul>
 <h2 id="mathrandfmin_v-f64-max_v-f64"><a class="header" href="#mathrandfmin_v-f64-max_v-f64"><code>math.randf(min_v: f64, max_v: f64)</code></a></h2>
 <p>Returns a random number between a minimum and maximum value, inclusive</p>
-<h3 id="returns-5-1"><a class="header" href="#returns-5-1">Returns</a></h3>
+<h3 id="returns-5-2"><a class="header" href="#returns-5-2">Returns</a></h3>
 <ul>
 <li><code>f64</code>: A random number between your provided minimum and maximum</li>
 </ul>

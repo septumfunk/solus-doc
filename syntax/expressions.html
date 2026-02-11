@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Keywords and Expressions - solus 0.6</title>
+        <title>Keywords and Expressions - solus 0.9.1</title>
 
 
         <!-- Custom HTML head -->
@@ -36,7 +36,7 @@
             const path_to_root = "../";
             const default_light_theme = "coal";
             const default_dark_theme = "coal";
-            window.path_to_searchindex_js = "../searchindex-899478ff.js";
+            window.path_to_searchindex_js = "../searchindex-faff2f83.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-c8a7c3ba.js"></script>
@@ -138,7 +138,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">solus 0.6</h1>
+                    <h1 class="menu-title">solus 0.9.1</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -179,43 +179,36 @@
 <p>These are words that are reserved by the language for use in expressions, meaning they evaluate into a value, therefore can be assigned to a variable.</p>
 <h2 id="operations"><a class="header" href="#operations">Operations</a></h2>
 <p>There are some basic operations between types built into solus, and these are accessible with familiar and simple operators that you will recognize from maths or other programming languages. <strong>Note:</strong> <code>i64</code> and <code>f64</code> are automatically converted for basic operations with each other, and the target type is always determined by the type of the <strong>left-hand side</strong>.</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 1 + 2;
-let y = 4 / 4;
+<pre><code class="language-c">var x = 1 + 2;
+val y = 4 / 4;
 x = (x * y) / 3.0;
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="self"><a class="header" href="#self"><code>self</code></a></h2>
 <p>Self refers to the future storage location of an object during its construction. You can then capture the object in member functions, getting around the need to have the object passed as an argument to its own methods. Self is not defined in other contexts, and can be used as a name for local variables if you so desire.</p>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = {
+<pre><code class="language-c">var x = {
     count = 3
     call = [self](){ self.count }
 };
-<span class="boring">}</span></code></pre>
+</code></pre>
 <h2 id="true-false-nil"><a class="header" href="#true-false-nil"><code>true</code>, <code>false</code>, <code>nil</code></a></h2>
 <p>These represent constants for their respective types, and cannot be overridden or used for names of local variables.</p>
 <h2 id="do-"><a class="header" href="#do-"><code>do {}</code></a></h2>
 <p>Executes a block and evaluates to the trailing return of the block. If the block does not have a trailing return, it will evaluate to <code>nil</code>. This is useful for executing code for function arguments, like this:</p>
 <h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>io.println(do {
-    let x = 1;
+<pre><code class="language-c">io.println(do {
+    var x = 1;
     x += 3;
     x
 });
-<span class="boring">}</span></code></pre>
-<h2 id="if-c-a-else-b"><a class="header" href="#if-c-a-else-b"><code>if c: a else: b</code></a></h2>
-<p>The <code>if</code>/<code>else</code> statements can be used as an expression as well, mimicking the ternary operator in other languages. This statment will not work unless you provide an else, as it doesn’t make sense to implicitly return <code>nil</code> here. you can also chain these.</p>
+</code></pre>
+<h2 id="c-and-a-or-b"><a class="header" href="#c-and-a-or-b"><code>c and a or b</code></a></h2>
+<p>The <code>and</code>/<code>or</code> statements can be used to short circuit, as they evaluate to the last value that was evaluated within them. Therefore, <code>or</code> evaluates to the first truthful value, and <code>and</code> evaluates to the last truthful value.</p>
 <h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = true;
-io.println(if x: "true!" else: "false!");
-<span class="boring">}</span></code></pre>
+<pre><code class="language-c">var x = true;
+io.println(x and "true" or "false");
+</code></pre>
+<p><strong>Note:</strong> You may also use <code>&amp;&amp;</code>/<code>||</code> instead of <code>and</code>/<code>or</code> respectively.</p>
 
                     </main>
 
